@@ -6,5 +6,5 @@ class Block:
 		self.y = y
 
 	def __str__(self):
-		return f"{self.tag} {self.x} {self.y}"
+		return f"Block '{self.tag}', x:{self.x}, y:{self.y}"
 
