@@ -4,18 +4,24 @@ from block import Block
 
 
 class Figure:
-	def __init__(self, title: str = "", x: int = 0, y: int = 0):
+	def __init__(self, title: str = ""):
 		self.title = title
-		self.x = x
-		self.y = y
+		self.x = 0
+		self.y = 0
 		self.width = 0
 		self.height = 0
 		self.blocks: List[Block] = []
-		self.figure_map: List[List[Block]] = [[]]
+		self.figure_map: List[List[Block | None]] = []
 
 
 	def __str__(self):
-		return f"Figure '{self.title}', x:{self.x}, y:{self.y}, width:{self.width}, height:{self.height}"
+		return (f"Figure '{self.title}': " 
+		  		f"x:{self.x}, "
+		  		f"y:{self.y}, "
+		  		f"width:{self.width}, "
+		  		f"height:{self.height}"
+				# f"figure map:\n\t{self.show_map()}"
+		)
 
 
 	def add_block(self, new_block: Block, x: int, y: int):
@@ -28,8 +34,8 @@ class Figure:
 		new_block.y = y
 		self.blocks.append(new_block)
 		self._update_figure_size()
-		self.update_figure_map()
-		self.figure_map[x][y] = new_block
+		self._update_figure_map()
+		# self.figure_map[x][y] = new_block
 
 
 	def _update_figure_size(self):
@@ -45,6 +51,34 @@ class Figure:
 
 
 	def _update_figure_map(self):
-		pass
+		new_figure_map: List[List[Block | None]] = self._create_map(self.height, self.width)
+				
+		for block in self.blocks:
+			new_figure_map[block.y][block.x] = block
+
+		self.figure_map = new_figure_map
+
+	
+	def _create_map(self, h: int, w: int, value=None):
+		map: List[List[Block | None]] = []
+
+		for y in range(h):
+			map.append([])
+			for x in range(w):
+				map[y].append(value)
+
+		return map
+
+
+	def show_map(self):
+		print("----------------")
+		for str in self.figure_map:
+			for obj in str:
+				if obj is None:
+					print(0, end=" ")
+				else:
+					print(1, end=" ")
+			print()
+		print("----------------")
 
 

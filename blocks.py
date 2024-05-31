@@ -3,10 +3,24 @@ from block import Block
 from figure import Figure
 
 
-b1 = Block("b1", 2, 5)
-b2 = Block()
+b1 = Block("b1")
+b2 = Block("b2")
+b3 = Block("b3")
 print(b1)
-print(b2)
+# print(b2)
 
-f1 = Figure("f1", 1, 1)
+# blocks = []
+# for i in range(4):
+#     blocks.append(Block(f"b{i}"))
+# print(blocks[0])
+
+f1 = Figure("f1")
 print(f1)
+f1.show_map()
+f1.add_block(b1, 0, 0)
+# print(f1)
+# f1.show_map()
+f1.add_block(b2, 0, 1)
+f1.add_block(b3, 1, 1)
+print(f1)
+f1.show_map()

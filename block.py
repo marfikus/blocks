@@ -1,9 +1,9 @@
 
 class Block:
-	def __init__(self, tag: str = "", x: int = 0, y: int = 0):
+	def __init__(self, tag: str = ""):
 		self.tag = tag
-		self.x = x
-		self.y = y
+		self.x = 0
+		self.y = 0
 
 	def __str__(self):
 		return f"Block '{self.tag}', x:{self.x}, y:{self.y}"
