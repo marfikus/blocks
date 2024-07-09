@@ -1,6 +1,10 @@
 
 from typing import List
+from angle import Angle
 from block import Block
+from coords import Coords
+from rotation import Rotation
+# from map import Map
 
 
 class Figure:
@@ -12,6 +16,8 @@ class Figure:
         self.height = 0
         self.blocks: List[Block] = []
         self.figure_map: List[List[Block | None]] = []
+        self.rotation: Rotation = Rotation()
+        self.map_link = None
 
 
     def __str__(self):
@@ -82,3 +88,67 @@ class Figure:
         print("----------------")
 
 
+    def make_rotation(self, angle: Angle):
+        self.rotation = Rotation()
+
+        if angle == Angle.CLOCKWISE_90:
+            self.rotation.figure_map = self._create_map(self.width, self.height) # меняем местами габариты
+            self.rotation.width = self.height
+            self.rotation.height = self.width
+
+            # перекладываем ячейки
+            for i in range(self.width): # i - по строкам новой карты и по столбцам старой
+                k = self.height - 1 # j - по столбцам новой карты, k - по строкам старой
+                for j in range(self.height):
+                    self.rotation.figure_map[i][j] = self.figure_map[k][i]
+                    k -= 1
+
+        elif angle == Angle.COUNTERCLOCKWISE_90:
+            pass
+        elif angle == Angle.CLOCKWISE_180:
+            pass
+
+
+        self.rotation.is_active = True
+
+        # rotation.show_map()
+
+        # match angle:
+        #     case Angle.CLOCKWISE_90:
+        #         print(1)
+        #     case Angle.CLOCKWISE_180:
+        #         print(2)
+
+
+    def apply_rotation(self):
+        if not self.rotation.is_active:
+            print("No active rotation!")
+            return
+            
+        self.width = self.rotation.width
+        self.height = self.rotation.height
+        self.figure_map = self.rotation.figure_map
+        self._update_blocks_coords()
+        self.rotation.is_active = False
+
+
+    def _update_blocks_coords(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.figure_map[y][x] is not None:
+                    # наверное так будет норм, поскольку в blocks и в figure_map находятся ссылки на одни и те же объекты
+                    self.figure_map[y][x].x = x # type: ignore
+                    self.figure_map[y][x].y = y # type: ignore
+
+
+    def get_blocks_coords(self) -> List[Coords]:
+        coords: List[Coords] = []
+        
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.figure_map[y][x] != None:
+                    coords.append(Coords(x, y))
+        
+        return coords
+    
+    

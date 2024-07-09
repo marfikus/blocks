@@ -22,3 +22,16 @@ class Rotation:
                     coords.append(Coords(x, y))
         
         return coords
+    
+
+    def show_map(self):
+        print("----------------")
+        for str in self.figure_map:
+            for obj in str:
+                if obj is None:
+                    print(0, end=" ")
+                else:
+                    print(1, end=" ")
+            print()
+        print("----------------")
+
