@@ -8,7 +8,7 @@ from rotation import Rotation
 
 
 class Figure:
-    def __init__(self, title: str = ""):
+    def __init__(self, title: str=""):
         self.title = title
         self.x = 0
         self.y = 0
