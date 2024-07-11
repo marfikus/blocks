@@ -6,13 +6,13 @@ from figure_l import FigureL
 from map import Map
 
 
-def start_interactive(map, active_figure: Figure):
+def start_interactive(map: Map, figure: Figure):
     import pygame
 
 
     SIZE = 50
-    WIDTH = len(map[0]) * SIZE
-    HEIGHT = len(map) * SIZE
+    WIDTH = len(map.busy_cells_map[0]) * SIZE
+    HEIGHT = len(map.busy_cells_map) * SIZE
     FPS = 60
 
     BLACK = (0, 0, 0)
@@ -20,27 +20,30 @@ def start_interactive(map, active_figure: Figure):
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
 
-
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("My game")
     clock = pygame.time.Clock()
 
-    screen.fill(BLACK)
+    def update_map():
+        screen.fill(BLACK)
 
-    x = 0
-    y = 0
-
-    for string in map:
-        for cell in string:
-            if cell == 1:
-                pygame.draw.rect(screen, RED, pygame.Rect(x, y, SIZE, SIZE))
-            x += SIZE
         x = 0
-        y += SIZE
+        y = 0
 
-    pygame.display.update()
+        for string in map.busy_cells_map:
+            for cell in string:
+                if cell == 1:
+                    pygame.draw.rect(screen, RED, pygame.Rect(x, y, SIZE, SIZE))
+                x += SIZE
+            x = 0
+            y += SIZE
+
+        pygame.display.update()
+
+
+    update_map()
 
 
     running = True
@@ -50,21 +53,18 @@ def start_interactive(map, active_figure: Figure):
             if event.type == pygame.QUIT:
                 running = False
 
-        # pressed = pygame.key.get_pressed()
-        # if pressed[pygame.K_UP]:
-        #     if (y - step) >= 0:
-        #         y -= step
-        # if pressed[pygame.K_DOWN]:
-        #     if (y + h + step) <= HEIGHT:
-        #         y += step
-        # if pressed[pygame.K_LEFT]:
-        #     if (x - step) >= 0:
-        #         x -= step
-        # if pressed[pygame.K_RIGHT]:
-        #     if (x + w + step) <= WIDTH:
-        #         x += step
+            pressed = pygame.key.get_pressed()
+            if pressed[pygame.K_UP]:
+                map.move_figure(figure, figure.x, figure.y - 1)
+            if pressed[pygame.K_DOWN]:
+                map.move_figure(figure, figure.x, figure.y + 1)
+            if pressed[pygame.K_LEFT]:
+                map.move_figure(figure, figure.x - 1, figure.y)
+            if pressed[pygame.K_RIGHT]:
+                map.move_figure(figure, figure.x + 1, figure.y)
 
-        # pygame.display.update()
+        
+        update_map()
         clock.tick(FPS)
 
     pygame.quit()
@@ -128,4 +128,4 @@ map.show()
 print(fl_2)
 
 
-start_interactive(map.busy_cells_map, fl_2)
+start_interactive(map, fl_2)
