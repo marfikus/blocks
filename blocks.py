@@ -6,6 +6,70 @@ from figure_l import FigureL
 from map import Map
 
 
+def start_interactive(map, active_figure: Figure):
+    import pygame
+
+
+    SIZE = 50
+    WIDTH = len(map[0]) * SIZE
+    HEIGHT = len(map) * SIZE
+    FPS = 60
+
+    BLACK = (0, 0, 0)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+
+
+    pygame.init()
+    pygame.mixer.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("My game")
+    clock = pygame.time.Clock()
+
+    screen.fill(BLACK)
+
+    x = 0
+    y = 0
+
+    for string in map:
+        for cell in string:
+            if cell == 1:
+                pygame.draw.rect(screen, RED, pygame.Rect(x, y, SIZE, SIZE))
+            x += SIZE
+        x = 0
+        y += SIZE
+
+    pygame.display.update()
+
+
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # pressed = pygame.key.get_pressed()
+        # if pressed[pygame.K_UP]:
+        #     if (y - step) >= 0:
+        #         y -= step
+        # if pressed[pygame.K_DOWN]:
+        #     if (y + h + step) <= HEIGHT:
+        #         y += step
+        # if pressed[pygame.K_LEFT]:
+        #     if (x - step) >= 0:
+        #         x -= step
+        # if pressed[pygame.K_RIGHT]:
+        #     if (x + w + step) <= WIDTH:
+        #         x += step
+
+        # pygame.display.update()
+        clock.tick(FPS)
+
+    pygame.quit()
+
+
 b1 = Block("b1")
 b2 = Block("b2")
 b3 = Block("b3")
@@ -58,7 +122,10 @@ map.show()
 map.rotate_figure(fl_2, Angle.CLOCKWISE_90)
 map.show()
 
-map.move_figure(fl_1, 4, 3)
+# map.move_figure(fl_1, 4, 3)
 map.show()
 
 print(fl_2)
+
+
+start_interactive(map.busy_cells_map, fl_2)
