@@ -1,5 +1,5 @@
 
-from typing import List
+from typing import Any, List
 from angle import Angle
 from block import Block
 from coords import Coords
@@ -17,7 +17,7 @@ class Figure:
         self.blocks: List[Block] = []
         self.figure_map: List[List[Block | None]] = []
         self.rotation: Rotation = Rotation()
-        self.map_link = None
+        self.map_link: Any = None
 
 
     def __str__(self):
@@ -104,9 +104,30 @@ class Figure:
                     k -= 1
 
         elif angle == Angle.COUNTERCLOCKWISE_90:
-            pass
+            self.rotation.figure_map = self._create_map(self.width, self.height) # меняем местами габариты
+            self.rotation.width = self.height
+            self.rotation.height = self.width
+
+            # перекладываем ячейки
+            k = self.width - 1 # k - по столбцам старой карты
+            for i in range(self.width): # i - по строкам новой карты
+                for j in range(self.height): # j - по столбцам новой карты и по строкам старой
+                    self.rotation.figure_map[i][j] = self.figure_map[j][k]
+                k -= 1
+
         elif angle == Angle.CLOCKWISE_180:
-            pass
+            self.rotation.figure_map = self._create_map(self.height, self.width) # в этом случае не меняем габариты
+            self.rotation.width = self.width
+            self.rotation.height = self.height
+
+            # перекладываем ячейки
+            n = self.height - 1 # n - по строкам старой карты
+            for i in range(self.height): # i - по строкам новой карты
+                k = self.width - 1 # j - по столбцам новой карты, k - по столбцам старой
+                for j in range(self.width):
+                    self.rotation.figure_map[i][j] = self.figure_map[n][k]
+                    k -= 1
+                n -= 1
 
 
         self.rotation.is_active = True
