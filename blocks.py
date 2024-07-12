@@ -1,4 +1,5 @@
 
+from gc import isenabled
 from angle import Angle
 from block import Block
 from figure import Figure
@@ -43,28 +44,38 @@ def start_interactive(map: Map, figure: Figure):
         pygame.display.update()
 
 
-    update_map()
-
-
     running = True
+    is_need_update_map = True
+    # figure = map.figures[1]
+    rotated = False
 
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
+                is_need_update_map = True
 
             pressed = pygame.key.get_pressed()
             if pressed[pygame.K_UP]:
                 map.move_figure(figure, figure.x, figure.y - 1)
-            if pressed[pygame.K_DOWN]:
+            elif pressed[pygame.K_DOWN]:
                 map.move_figure(figure, figure.x, figure.y + 1)
-            if pressed[pygame.K_LEFT]:
+            elif pressed[pygame.K_LEFT]:
                 map.move_figure(figure, figure.x - 1, figure.y)
-            if pressed[pygame.K_RIGHT]:
+            elif pressed[pygame.K_RIGHT]:
                 map.move_figure(figure, figure.x + 1, figure.y)
+            elif pressed[pygame.K_SPACE]:
+                if not rotated:
+                    map.rotate_figure(figure, Angle.CLOCKWISE_90)
+                    rotated = True
 
         
-        update_map()
+        if is_need_update_map:
+            update_map()
+            is_need_update_map = False
+            rotated = False
+
         clock.tick(FPS)
 
     pygame.quit()
@@ -118,13 +129,13 @@ map.show()
 fl_2 = FigureL()
 map.add_figure(fl_2, 5, 3)
 map.show()
+print(fl_2)
 
 map.rotate_figure(fl_2, Angle.CLOCKWISE_90)
 map.show()
 
 # map.move_figure(fl_1, 4, 3)
-map.show()
-
+# map.show()
 print(fl_2)
 
 
