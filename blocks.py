@@ -1,5 +1,4 @@
 
-from gc import isenabled
 from angle import Angle
 from block import Block
 from figure import Figure
@@ -7,7 +6,7 @@ from figure_l import FigureL
 from map import Map
 
 
-def start_interactive(map: Map, figure: Figure):
+def start_interactive():
     import pygame
 
 
@@ -44,6 +43,24 @@ def start_interactive(map: Map, figure: Figure):
         pygame.display.update()
 
 
+    def select_next_figure():
+        nonlocal figure_index
+
+        # if len(map.figures) == 0:
+        #     print("No figures in map!")
+        #     return
+        
+        if figure_index < len(map.figures) - 1:
+            figure_index += 1
+        else:
+            figure_index = 0
+
+        return map.figures[figure_index]
+
+
+    figure_index = 0
+    figure = select_next_figure()
+
     running = True
     is_need_update_map = True
     # figure = map.figures[1]
@@ -69,15 +86,15 @@ def start_interactive(map: Map, figure: Figure):
                 if not rotated:
                     map.rotate_figure(figure, Angle.CLOCKWISE_90)
                     rotated = True
+            elif pressed[pygame.K_TAB]:
+                figure = select_next_figure()
 
-        
         if is_need_update_map:
             update_map()
             is_need_update_map = False
             rotated = False
 
         clock.tick(FPS)
-
     pygame.quit()
 
 
@@ -139,4 +156,6 @@ map.show()
 print(fl_2)
 
 
-start_interactive(map, fl_2)
+start_interactive()
+
+# todo: исправить вылет при попытке повернуть фигуру возле границы карты (выход индексов за диапазон списка)
