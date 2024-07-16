@@ -133,7 +133,7 @@ class Map:
         f.make_rotation(angle)
         
         # Проверяем возможность новой позиции (не выходит ли за границы карты)
-        if not self._is_valid_figure_position(f, True):
+        if not self._is_valid_figure_position(f, rotation=True):
             return
             
         # Вычисляем массивы координат относительно текущей позиции фигуры

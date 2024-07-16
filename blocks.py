@@ -43,6 +43,7 @@ def start_interactive():
         pygame.display.update()
 
 
+    # todo: сделать нормально, отдельный класс со счетчиком...
     def select_next_figure():
         nonlocal figure_index
 
@@ -158,4 +159,4 @@ print(fl_2)
 
 start_interactive()
 
-# todo: исправить вылет при попытке повернуть фигуру возле границы карты (выход индексов за диапазон списка)
+# todo: активную фигуру закрашивать другим цветом
