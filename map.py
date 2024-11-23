@@ -159,6 +159,35 @@ class Map:
         f.apply_rotation()
 
 
+    def drop_figure(self, f: Figure):
+        # Проверяем наличие фигуры на карте
+        if not self._figure_is_exists_on_map(f):
+            print("This figure is not exists on map!")
+            return
+
+        self.figures.remove(f)
+        
+        f.map_link = None
+        f.x = 0
+        f.y = 0
+        print("figure dropped")
+
+
+    def check_on_filled_lines(self) -> bool:
+        for string in self.busy_cells_map:
+            filled = True
+            for cell in string:
+                if not cell:
+                    filled = False
+                    break
+            if filled:
+                print("filled string! need to shift")
+
+
+    def remove_filled_lines(self):
+        pass
+
+
     def _get_rel_blocks_coords(self, coords_arrays: TwoCoordsArrays, cur_pos: Coords, new_pos: Coords) -> TwoCoordsArrays:
         cur_blocks_coords: List[Coords] = coords_arrays.first
         new_blocks_coords: List[Coords] = coords_arrays.second

@@ -110,14 +110,14 @@ b3 = Block("b3")
 #     blocks.append(Block(f"b{i}"))
 # print(blocks[0])
 
-f1 = Figure("f1")
+# f1 = Figure("f1")
 # print(f1)
 # f1.show_map()
-f1.add_block(b1, 0, 0)
+# f1.add_block(b1, 0, 0)
 # print(f1)
 # f1.show_map()
-f1.add_block(b2, 0, 1)
-f1.add_block(b3, 1, 1)
+# f1.add_block(b2, 0, 1)
+# f1.add_block(b3, 1, 1)
 # print(f1)
 # f1.show_map()
 
@@ -141,22 +141,28 @@ fl_1 = FigureL()
 print(fl_1)
 fl_1.show_map()
 
-map.add_figure(fl_1, 2, 3)
+map.add_figure(fl_1, 0, 7)
 map.show()
 
-fl_2 = FigureL()
-map.add_figure(fl_2, 5, 3)
-map.show()
-print(fl_2)
-
-map.rotate_figure(fl_2, Angle.CLOCKWISE_90)
-map.show()
-
-# map.move_figure(fl_1, 4, 3)
-# map.show()
-print(fl_2)
-
-
-start_interactive()
-
+# start_interactive()
 # todo: активную фигуру закрашивать другим цветом
+
+map.drop_figure(fl_1)
+map.add_figure(fl_1, 2, 7)
+map.drop_figure(fl_1)
+map.show()
+map.check_on_filled_lines()
+
+
+map.add_figure(fl_1, 4, 7)
+map.drop_figure(fl_1)
+map.show()
+map.add_figure(fl_1, 6, 7)
+map.drop_figure(fl_1)
+map.show()
+map.add_figure(fl_1, 8, 7)
+map.drop_figure(fl_1)
+map.show()
+map.check_on_filled_lines()
+
+
