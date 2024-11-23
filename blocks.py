@@ -151,8 +151,7 @@ map.drop_figure(fl_1)
 map.add_figure(fl_1, 2, 7)
 map.drop_figure(fl_1)
 map.show()
-map.check_on_filled_lines()
-
+map.remove_filled_lines()
 
 map.add_figure(fl_1, 4, 7)
 map.drop_figure(fl_1)
@@ -160,9 +159,11 @@ map.show()
 map.add_figure(fl_1, 6, 7)
 map.drop_figure(fl_1)
 map.show()
+map.remove_filled_lines()
 map.add_figure(fl_1, 8, 7)
 map.drop_figure(fl_1)
 map.show()
-map.check_on_filled_lines()
+map.remove_filled_lines()
+map.show()
 
 

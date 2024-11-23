@@ -173,19 +173,38 @@ class Map:
         print("figure dropped")
 
 
-    def check_on_filled_lines(self) -> bool:
-        for string in self.busy_cells_map:
+    def remove_filled_lines(self):
+        for y in range(len(self.busy_cells_map)):
             filled = True
-            for cell in string:
-                if not cell:
+            for x in range(len(self.busy_cells_map[0])):
+                if not self.busy_cells_map[y][x]:
                     filled = False
                     break
             if filled:
                 print("filled string! need to shift")
+                self._remove_line(y)
+                break
+        if filled:
+            self.remove_filled_lines()
 
 
-    def remove_filled_lines(self):
-        pass
+    def _remove_line(self, line_number):
+        if line_number < 0:
+            return
+        
+        for i in range(len(self.busy_cells_map[line_number])):
+            self.busy_cells_map[line_number][i] = 0
+            
+        if line_number == 0: 
+            return
+        
+        start_line = len(self.busy_cells_map) - (len(self.busy_cells_map) - line_number)
+        for i in range(start_line, 0, -1):
+            for j in range(len(self.busy_cells_map[0])):
+                self.busy_cells_map[i][j] = self.busy_cells_map[i - 1][j]
+            
+        for i in range(len(self.busy_cells_map[0])):
+            self.busy_cells_map[0][i] = 0
 
 
     def _get_rel_blocks_coords(self, coords_arrays: TwoCoordsArrays, cur_pos: Coords, new_pos: Coords) -> TwoCoordsArrays:
