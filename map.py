@@ -26,8 +26,14 @@ class Map:
     def show(self):
         add_space: str = " "
         
+        print(add_space, end="")
+        for i in range(len(self.busy_cells_map)):
+            print(f"{add_space}{i}", end="")
+        print()
+
         print(f" {add_space}{('-' + add_space) * self.width}")
         
+        i = 0
         for string in self.busy_cells_map:
             cells_str = ""
             for cell in string:
@@ -36,7 +42,8 @@ class Map:
                     cells_str += "o" + add_space
                 else:
                     cells_str += " " + add_space
-            print(f"|{add_space}{cells_str}|")
+            print(f"|{add_space}{cells_str}| {i}")
+            i += 1
             
         print(f" {add_space}{('-' + add_space) * self.width}")
         
