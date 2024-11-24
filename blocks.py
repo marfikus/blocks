@@ -3,6 +3,7 @@ from angle import Angle
 from block import Block
 from figure import Figure
 from figure_l import FigureL
+from figure_line import FigureLine
 from map import Map
 
 
@@ -142,28 +143,43 @@ print(fl_1)
 fl_1.show_map()
 
 map.add_figure(fl_1, 0, 7)
+map.drop_figure(fl_1)
 map.show()
 
 # start_interactive()
 # todo: активную фигуру закрашивать другим цветом
 
-map.drop_figure(fl_1)
-map.add_figure(fl_1, 2, 7)
-map.drop_figure(fl_1)
-map.show()
-map.remove_filled_lines()
+# map.add_figure(fl_1, 2, 7)
+# map.drop_figure(fl_1)
+# map.show()
+# map.remove_filled_lines()
 
-map.add_figure(fl_1, 4, 7)
-map.drop_figure(fl_1)
-map.show()
-map.add_figure(fl_1, 6, 7)
-map.drop_figure(fl_1)
-map.show()
-map.remove_filled_lines()
-map.add_figure(fl_1, 8, 7)
-map.drop_figure(fl_1)
-map.show()
-map.remove_filled_lines()
-map.show()
+# map.add_figure(fl_1, 4, 7)
+# map.drop_figure(fl_1)
+# map.show()
+# map.add_figure(fl_1, 6, 7)
+# map.drop_figure(fl_1)
+# map.show()
+# map.remove_filled_lines()
+# map.add_figure(fl_1, 8, 7)
+# map.drop_figure(fl_1)
+# map.show()
+# map.show()
 
+f_line_1 = FigureLine()
+# print(f_line_1)
+# f_line_1.show_map()
+
+map.add_figure(f_line_1, 2, 9)
+# map.rotate_figure(f_line_1, Angle.CLOCKWISE_90)
+# map.move_figure(f_line_1, 0, 0)
+map.drop_figure(f_line_1)
+
+map.add_figure(f_line_1, 6, 9)
+map.drop_figure(f_line_1)
+map.add_figure(fl_1, 8, 0)
+map.drop_figure(fl_1)
+map.show()
+map.remove_filled_lines()
+map.show()
 
