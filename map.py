@@ -25,11 +25,6 @@ class Map:
     
     def show(self):
         add_space: str = " "
-        
-        print(add_space, end="")
-        for i in range(len(self.busy_cells_map)):
-            print(f"{add_space}{i}", end="")
-        print()
 
         print(f" {add_space}{('-' + add_space) * self.width}")
         
@@ -46,6 +41,12 @@ class Map:
             i += 1
             
         print(f" {add_space}{('-' + add_space) * self.width}")
+
+        print(add_space, end="")
+        for i in range(len(self.busy_cells_map)):
+            print(f"{add_space}{i}", end="")
+        print()
+        print("=" * self.width * 3)
         
     
     def add_figure(self, f: Figure, x: int, y: int):
