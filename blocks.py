@@ -3,6 +3,7 @@ from angle import Angle
 from block import Block
 from figure import Figure
 from figure_s import FigureS
+from figure_back_s import FigureBackS
 from figure_t import FigureT
 from figure_l import FigureL
 from figure_back_l import FigureBackL
@@ -207,8 +208,13 @@ map.drop_figure(f_line_1)
 
 f_s_1 = FigureS()
 map.add_figure(f_s_1, 0, 0)
-map.rotate_figure(f_s_1, Angle.CLOCKWISE_90)
+# map.rotate_figure(f_s_1, Angle.CLOCKWISE_90)
 map.drop_figure(f_s_1)
+
+f_back_s_1 = FigureBackS()
+map.add_figure(f_back_s_1, 3, 0)
+# map.rotate_figure(f_back_s_1, Angle.CLOCKWISE_90)
+map.drop_figure(f_back_s_1)
 
 map.show()
 map.remove_filled_lines()
