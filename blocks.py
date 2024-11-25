@@ -11,6 +11,8 @@ from figure_line import FigureLine
 from figure_square import FigureSquare
 from map import Map
 
+import random
+
 
 def start_interactive():
     import pygame
@@ -219,4 +221,17 @@ map.drop_figure(f_back_s_1)
 map.show()
 map.remove_filled_lines()
 map.show()
+
+figures = [
+    FigureLine(),
+    FigureSquare(),
+    FigureT(),
+    FigureL(),
+    FigureBackL(),
+    FigureS(),
+    FigureBackS(),
+]
+
+random_figure = random.choice(figures)
+print(random_figure)
 
