@@ -4,6 +4,7 @@ from block import Block
 from figure import Figure
 from figure_l import FigureL
 from figure_line import FigureLine
+from figure_square import FigureSquare
 from map import Map
 
 
@@ -179,6 +180,20 @@ map.add_figure(f_line_1, 6, 9)
 map.drop_figure(f_line_1)
 map.add_figure(fl_1, 8, 0)
 map.drop_figure(fl_1)
+map.add_figure(f_line_1, 1, 8)
+map.drop_figure(f_line_1)
+map.add_figure(f_line_1, 5, 8)
+map.drop_figure(f_line_1)
+map.add_figure(f_line_1, 0, 0)
+map.rotate_figure(f_line_1, Angle.CLOCKWISE_90)
+map.move_figure(f_line_1, 9, 5)
+map.drop_figure(f_line_1)
+
+f_square_1 = FigureSquare()
+map.add_figure(f_square_1, 0, 0)
+# map.move_figure(f_line_1, 9, 5)
+map.drop_figure(f_square_1)
+
 map.show()
 map.remove_filled_lines()
 map.show()
