@@ -3,6 +3,7 @@ from angle import Angle
 from block import Block
 from figure import Figure
 from figure_l import FigureL
+from figure_back_l import FigureBackL
 from figure_line import FigureLine
 from figure_square import FigureSquare
 from map import Map
@@ -189,10 +190,13 @@ map.rotate_figure(f_line_1, Angle.CLOCKWISE_90)
 map.move_figure(f_line_1, 9, 5)
 map.drop_figure(f_line_1)
 
-f_square_1 = FigureSquare()
-map.add_figure(f_square_1, 0, 0)
-# map.move_figure(f_line_1, 9, 5)
-map.drop_figure(f_square_1)
+# f_square_1 = FigureSquare()
+# map.add_figure(f_square_1, 0, 0)
+# map.drop_figure(f_square_1)
+
+f_back_l_1 = FigureBackL()
+map.add_figure(f_back_l_1, 0, 0)
+map.drop_figure(f_back_l_1)
 
 map.show()
 map.remove_filled_lines()
