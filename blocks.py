@@ -107,9 +107,9 @@ def start_interactive():
     pygame.quit()
 
 
-b1 = Block("b1")
-b2 = Block("b2")
-b3 = Block("b3")
+# b1 = Block("b1")
+# b2 = Block("b2")
+# b3 = Block("b3")
 # print(b1)
 # print(b2)
 
@@ -146,12 +146,12 @@ map = Map(10, 10)
 # map.show()
 
 fl_1 = FigureL()
-print(fl_1)
-fl_1.show_map()
+# print(fl_1)
+# fl_1.show_map()
 
-map.add_figure(fl_1, 0, 7)
-map.drop_figure(fl_1)
-map.show()
+# map.add_figure(fl_1, 0, 7)
+# map.drop_figure(fl_1)
+# map.show()
 
 # start_interactive()
 # todo: активную фигуру закрашивать другим цветом
@@ -173,27 +173,31 @@ map.show()
 # map.show()
 # map.show()
 
-f_line_1 = FigureLine()
+# f_line_1 = FigureLine()
 # print(f_line_1)
 # f_line_1.show_map()
-
-map.add_figure(f_line_1, 2, 9)
+# map.add_figure(f_line_1, 5, 6)
 # map.rotate_figure(f_line_1, Angle.CLOCKWISE_90)
 # map.move_figure(f_line_1, 0, 0)
-map.drop_figure(f_line_1)
+# map.drop_figure(f_line_1)
+# map.show()
 
-map.add_figure(f_line_1, 6, 9)
-map.drop_figure(f_line_1)
-map.add_figure(fl_1, 8, 0)
-map.drop_figure(fl_1)
-map.add_figure(f_line_1, 1, 8)
-map.drop_figure(f_line_1)
-map.add_figure(f_line_1, 5, 8)
-map.drop_figure(f_line_1)
-map.add_figure(f_line_1, 0, 0)
-map.rotate_figure(f_line_1, Angle.CLOCKWISE_90)
-map.move_figure(f_line_1, 9, 5)
-map.drop_figure(f_line_1)
+# map.add_figure(fl_1, 5, 0)
+# map.rotate_figure(fl_1, Angle.CLOCKWISE_180)
+# map.show()
+
+# map.add_figure(f_line_1, 6, 9)
+# map.drop_figure(f_line_1)
+# # map.add_figure(fl_1, 8, 0)
+# # map.drop_figure(fl_1)
+# map.add_figure(f_line_1, 1, 8)
+# map.drop_figure(f_line_1)
+# map.add_figure(f_line_1, 5, 8)
+# map.drop_figure(f_line_1)
+# map.add_figure(f_line_1, 0, 0)
+# map.rotate_figure(f_line_1, Angle.CLOCKWISE_90)
+# map.move_figure(f_line_1, 9, 5)
+# map.drop_figure(f_line_1)
 
 # f_square_1 = FigureSquare()
 # map.add_figure(f_square_1, 0, 0)
@@ -208,19 +212,20 @@ map.drop_figure(f_line_1)
 # map.rotate_figure(f_t_1, Angle.CLOCKWISE_90)
 # map.drop_figure(f_t_1)
 
-f_s_1 = FigureS()
-map.add_figure(f_s_1, 0, 0)
-# map.rotate_figure(f_s_1, Angle.CLOCKWISE_90)
-map.drop_figure(f_s_1)
+# f_s_1 = FigureS()
+# map.add_figure(f_s_1, 0, 0)
+# # map.rotate_figure(f_s_1, Angle.CLOCKWISE_90)
+# map.drop_figure(f_s_1)
 
-f_back_s_1 = FigureBackS()
-map.add_figure(f_back_s_1, 3, 0)
-# map.rotate_figure(f_back_s_1, Angle.CLOCKWISE_90)
-map.drop_figure(f_back_s_1)
+# f_back_s_1 = FigureBackS()
+# map.add_figure(f_back_s_1, 3, 0)
+# # map.rotate_figure(f_back_s_1, Angle.CLOCKWISE_90)
+# map.drop_figure(f_back_s_1)
 
-map.show()
-map.remove_filled_lines()
-map.show()
+# map.show()
+# map.remove_filled_lines()
+# map.show()
+
 
 figures = [
     FigureLine(),
@@ -232,6 +237,33 @@ figures = [
     FigureBackS(),
 ]
 
-random_figure = random.choice(figures)
-print(random_figure)
+while True:
+    figure = random.choice(figures)
+    if not map.add_figure(figure, 3, 0):
+        break
+
+    # map.show()
+    # com = input()
+
+    while True:
+        map.remove_filled_lines()
+        map.show()
+        com = input()
+
+        if com == "t":
+            map.rotate_figure(figure, Angle.CLOCKWISE_90)
+        elif com == "l":
+            map.move_figure(figure, figure.x - 1, figure.y)
+        elif com == "r":
+            map.move_figure(figure, figure.x + 1, figure.y)
+
+        if not map.move_figure(figure, figure.x, figure.y + 1):
+            break
+
+    map.drop_figure(figure)
+
+
+
+
+
 

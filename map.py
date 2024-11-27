@@ -49,16 +49,16 @@ class Map:
         print("=" * self.width * 3)
         
     
-    def add_figure(self, f: Figure, x: int, y: int):
+    def add_figure(self, f: Figure, x: int, y: int) -> bool:
         if self._figure_is_exists_on_map(f):
             print("This figure is already exists on map!")
-            return
+            return False
             
         if not self._is_valid_figure_size(f):
-            return
+            return False
             
         if not self._is_valid_figure_position(f, x, y):
-            return
+            return False
             
         blocks_coords: List[Coords] = f.get_blocks_coords()
         rel_coords: List[Coords] = []
@@ -69,7 +69,7 @@ class Map:
             
             if self._cell_is_busy(rel_x, rel_y):
                 print("Busy cell!")
-                return
+                return False
             else:
                 rel_coords.append(Coords(rel_x, rel_y))
         
@@ -78,6 +78,8 @@ class Map:
         f.map_link = self
         f.x = x
         f.y = y
+
+        return True
         
     
     def remove_figure(self, f: Figure):
@@ -100,15 +102,15 @@ class Map:
         
         
     # todo: можно добавить moveFigureLeft/Right/Up/Down(), где будет вызываться moveFigure()
-    def move_figure(self, f: Figure, new_x: int, new_y: int):
+    def move_figure(self, f: Figure, new_x: int, new_y: int) -> bool:
         # Проверяем наличие фигуры на карте
         if not self._figure_is_exists_on_map(f):
             print("This figure is not exists on map!")
-            return
+            return False
 
         # Проверяем возможность новой позиции (не выходит ли за границы карты)
         if not self._is_valid_figure_position(f, new_x, new_y):
-            return
+            return False
             
         # Вычисляем массивы координат относительно текущей и новой позиции фигуры
         rel_coords_arrays: TwoCoordsArrays = self._get_rel_blocks_coords(
@@ -120,7 +122,7 @@ class Map:
         # Проверяем возможность перемещения фигуры в новую позицию (свободны ли ячейки на карте)
         if not self._all_cells_is_empty(rel_coords_arrays):
             print("Busy cell!")
-            return
+            return False
             
         # Обновляем массив занятых ячеек
         self._set_busy_cells(rel_coords_arrays.first, False)
@@ -129,6 +131,8 @@ class Map:
         # Обновляем позицию фигуры
         f.x = new_x
         f.y = new_y
+
+        return True
         
         
     def rotate_figure(self, f: Figure, angle: Angle):
