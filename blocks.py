@@ -107,8 +107,6 @@ def start_interactive():
                 is_need_update_map = True
 
             pressed = pygame.key.get_pressed()
-            # if pressed[pygame.K_UP]:
-                # map.move_figure(figure, figure.x, figure.y - 1)
             if pressed[pygame.K_DOWN]:
                 moved = map.move_figure(figure, figure.x, figure.y + 1)
                 if not moved:
@@ -123,16 +121,13 @@ def start_interactive():
                 if not rotated:
                     map.rotate_figure(figure, Angle.CLOCKWISE_90)
                     rotated = True
-            # elif pressed[pygame.K_TAB]:
-                # figure = select_next_figure()
             # elif pressed[pygame.K_F5]:
                 # if not saved:
                     # print("save")
                     # saved = True
                     # сохранять текущее состояние карты в файл, чтобы потом продолжить игру
-            
-            # elif pressed[pygame.K_q]:
-                # running = False
+            elif pressed[pygame.K_q]:
+                running = False
 
         if is_need_update_map:
             update_map()
