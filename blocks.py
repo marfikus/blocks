@@ -84,7 +84,9 @@ def start_interactive():
     game_speed = 1000
 
     while running:
-        # saved = False
+        # todo: вероятно можно избавиться от многих лишних флагов, где-то делать continue..
+        saved = False
+        loaded = False
         if figure_dropped:
             figure = random.choice(figures)
             if not map.add_figure(figure, 3, 0):
@@ -121,11 +123,14 @@ def start_interactive():
                 if not rotated:
                     map.rotate_figure(figure, Angle.CLOCKWISE_90)
                     rotated = True
-            # elif pressed[pygame.K_F5]:
-                # if not saved:
-                    # print("save")
-                    # saved = True
-                    # сохранять текущее состояние карты в файл, чтобы потом продолжить игру
+            elif pressed[pygame.K_F5]:
+                if not saved:
+                    print("save game")
+                    saved = True
+            elif pressed[pygame.K_F6]:
+                if not loaded:
+                    print("load game")
+                    loaded = True
             elif pressed[pygame.K_q]:
                 running = False
 
