@@ -12,6 +12,7 @@ from figure_square import FigureSquare
 from map import Map
 
 import random
+import time
 
 
 def start_interactive():
@@ -33,6 +34,8 @@ def start_interactive():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("My game")
     clock = pygame.time.Clock()
+    TIMEREVENT = pygame.USEREVENT + 1
+    pygame.time.set_timer(TIMEREVENT, 1000)
 
     def update_map():
         screen.fill(BLACK)
@@ -77,8 +80,11 @@ def start_interactive():
     # figure = map.figures[1]
     rotated = False
     figure_dropped = True
+    last = pygame.time.get_ticks()
+    game_speed = 1000
 
     while running:
+        # saved = False
         if figure_dropped:
             figure = random.choice(figures)
             if not map.add_figure(figure, 3, 0):
@@ -89,6 +95,14 @@ def start_interactive():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == TIMEREVENT:
+                moved = map.move_figure(figure, figure.x, figure.y + 1)
+                if not moved:
+                    map.drop_figure(figure)
+                    figure_dropped = True
+                    map.remove_filled_lines()
+                is_need_update_map = True
+                continue
             if event.type == pygame.KEYDOWN:
                 is_need_update_map = True
 
@@ -100,7 +114,7 @@ def start_interactive():
                 if not moved:
                     map.drop_figure(figure)
                     figure_dropped = True
-                    map.remove_filled_lines()                    
+                    map.remove_filled_lines()
             elif pressed[pygame.K_LEFT]:
                 map.move_figure(figure, figure.x - 1, figure.y)
             elif pressed[pygame.K_RIGHT]:
@@ -111,14 +125,14 @@ def start_interactive():
                     rotated = True
             # elif pressed[pygame.K_TAB]:
                 # figure = select_next_figure()
-
-
-            # if not moved:
-            #     if not map.move_figure(figure, figure.x, figure.y + 1):
-            #         map.drop_figure(figure)
-            #         figure_dropped = True
-            #         map.remove_filled_lines()
-
+            # elif pressed[pygame.K_F5]:
+                # if not saved:
+                    # print("save")
+                    # saved = True
+                    # сохранять текущее состояние карты в файл, чтобы потом продолжить игру
+            
+            # elif pressed[pygame.K_q]:
+                # running = False
 
         if is_need_update_map:
             update_map()
