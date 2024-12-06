@@ -2,24 +2,15 @@
 from angle import Angle
 from block import Block
 from figure import Figure
-from figure_s import FigureS
-from figure_back_s import FigureBackS
-from figure_t import FigureT
 from figure_l import FigureL
-from figure_back_l import FigureBackL
-from figure_line import FigureLine
-from figure_square import FigureSquare
 from map import Map
-
-import random
-import time
 
 
 def start_interactive():
     import pygame
 
 
-    SIZE = 30
+    SIZE = 50
     WIDTH = len(map.busy_cells_map[0]) * SIZE
     HEIGHT = len(map.busy_cells_map) * SIZE
     FPS = 60
@@ -34,8 +25,6 @@ def start_interactive():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("My game")
     clock = pygame.time.Clock()
-    TIMEREVENT = pygame.USEREVENT + 1
-    pygame.time.set_timer(TIMEREVENT, 1000)
 
     def update_map():
         screen.fill(BLACK)
@@ -71,50 +60,25 @@ def start_interactive():
 
 
     figure_index = 0
-    # figure = random.choice(figures)
-    # map.add_figure(figure, 3, 0)
-        # break
+    figure = select_next_figure()
 
     running = True
     is_need_update_map = True
     # figure = map.figures[1]
     rotated = False
-    figure_dropped = True
-    last = pygame.time.get_ticks()
-    game_speed = 1000
 
     while running:
-        # todo: вероятно можно избавиться от многих лишних флагов, где-то делать continue..
-        saved = False
-        loaded = False
-        if figure_dropped:
-            figure = random.choice(figures)
-            if not map.add_figure(figure, 3, 0):
-                running = False
-                break
-            figure_dropped = False
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == TIMEREVENT:
-                moved = map.move_figure(figure, figure.x, figure.y + 1)
-                if not moved:
-                    map.drop_figure(figure)
-                    figure_dropped = True
-                    map.remove_filled_lines()
-                is_need_update_map = True
-                continue
             if event.type == pygame.KEYDOWN:
                 is_need_update_map = True
 
             pressed = pygame.key.get_pressed()
-            if pressed[pygame.K_DOWN]:
-                moved = map.move_figure(figure, figure.x, figure.y + 1)
-                if not moved:
-                    map.drop_figure(figure)
-                    figure_dropped = True
-                    map.remove_filled_lines()
+            if pressed[pygame.K_UP]:
+                map.move_figure(figure, figure.x, figure.y - 1)
+            elif pressed[pygame.K_DOWN]:
+                map.move_figure(figure, figure.x, figure.y + 1)
             elif pressed[pygame.K_LEFT]:
                 map.move_figure(figure, figure.x - 1, figure.y)
             elif pressed[pygame.K_RIGHT]:
@@ -123,16 +87,8 @@ def start_interactive():
                 if not rotated:
                     map.rotate_figure(figure, Angle.CLOCKWISE_90)
                     rotated = True
-            elif pressed[pygame.K_F5]:
-                if not saved:
-                    print("save game")
-                    saved = True
-            elif pressed[pygame.K_F6]:
-                if not loaded:
-                    print("load game")
-                    loaded = True
-            elif pressed[pygame.K_q]:
-                running = False
+            elif pressed[pygame.K_TAB]:
+                figure = select_next_figure()
 
         if is_need_update_map:
             update_map()
@@ -143,44 +99,64 @@ def start_interactive():
     pygame.quit()
 
 
-map = Map(10, 15)
+b1 = Block("b1")
+b2 = Block("b2")
+b3 = Block("b3")
+# print(b1)
+# print(b2)
 
-figures = [
-    FigureLine(),
-    FigureSquare(),
-    FigureT(),
-    FigureL(),
-    FigureBackL(),
-    FigureS(),
-    FigureBackS(),
-]
+# blocks = []
+# for i in range(4):
+#     blocks.append(Block(f"b{i}"))
+# print(blocks[0])
+
+f1 = Figure("f1")
+# print(f1)
+# f1.show_map()
+f1.add_block(b1, 0, 0)
+# print(f1)
+# f1.show_map()
+f1.add_block(b2, 0, 1)
+f1.add_block(b3, 1, 1)
+# print(f1)
+# f1.show_map()
+
+# f1.make_rotation(Angle.CLOCKWISE_90)
+# f1.make_rotation(Angle.CLOCKWISE_90)
+
+map = Map(10, 10)
+# map.show()
+# map.add_figure(f1, 2, 4)
+# map.show()
+# map.move_figure(f1, 0, 4)
+# map.show()
+# map.rotate_figure(f1, Angle.CLOCKWISE_90)
+# map.show()
+# map.rotate_figure(f1, Angle.COUNTERCLOCKWISE_90)
+# map.show()
+# map.rotate_figure(f1, Angle.CLOCKWISE_180)
+# map.show()
+
+fl_1 = FigureL()
+print(fl_1)
+fl_1.show_map()
+
+map.add_figure(fl_1, 2, 3)
+map.show()
+
+fl_2 = FigureL()
+map.add_figure(fl_2, 5, 3)
+map.show()
+print(fl_2)
+
+map.rotate_figure(fl_2, Angle.CLOCKWISE_90)
+map.show()
+
+# map.move_figure(fl_1, 4, 3)
+# map.show()
+print(fl_2)
+
 
 start_interactive()
 
-# while True:
-#     figure = random.choice(figures)
-#     if not map.add_figure(figure, 3, 0):
-#         break
-
-#     while True:
-#         map.remove_filled_lines()
-#         map.show()
-#         com = input()
-
-#         if com == "t":
-#             map.rotate_figure(figure, Angle.CLOCKWISE_90)
-#         elif com == "l":
-#             map.move_figure(figure, figure.x - 1, figure.y)
-#         elif com == "r":
-#             map.move_figure(figure, figure.x + 1, figure.y)
-
-#         if not map.move_figure(figure, figure.x, figure.y + 1):
-#             break
-
-#     map.drop_figure(figure)
-
-
-
-
-
-
+# todo: активную фигуру закрашивать другим цветом
