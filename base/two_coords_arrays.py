@@ -1,6 +1,6 @@
 
 from typing import List
-from coords import Coords
+from .coords import Coords
 
 
 class TwoCoordsArrays:

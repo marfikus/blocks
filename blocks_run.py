@@ -1,9 +1,9 @@
 
-from angle import Angle
-from block import Block
-from figure import Figure
-from figure_l import FigureL
-from map import Map
+from base.angle import Angle
+from base.block import Block
+from base.figure import Figure
+from base.figure_l import FigureL
+from base.map import Map
 
 
 def start_interactive():

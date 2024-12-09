@@ -1,7 +1,7 @@
 
 from typing import List
-from block import Block
-from coords import Coords
+from .block import Block
+from .coords import Coords
 
 
 class Rotation:

@@ -1,9 +1,9 @@
 
 from typing import List
-from angle import Angle
-from coords import Coords
-from two_coords_arrays import TwoCoordsArrays
-from figure import Figure
+from .angle import Angle
+from .coords import Coords
+from .two_coords_arrays import TwoCoordsArrays
+from .figure import Figure
 
 
 class Map:

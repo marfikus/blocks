@@ -1,9 +1,9 @@
 
 from typing import Any, List
-from angle import Angle
-from block import Block
-from coords import Coords
-from rotation import Rotation
+from .angle import Angle
+from .block import Block
+from .coords import Coords
+from .rotation import Rotation
 # from map import Map
 
 

@@ -1,15 +1,15 @@
 
-from angle import Angle
-from block import Block
-from figure import Figure
-from figure_s import FigureS
-from figure_back_s import FigureBackS
-from figure_t import FigureT
-from figure_l import FigureL
-from figure_back_l import FigureBackL
-from figure_line import FigureLine
-from figure_square import FigureSquare
-from map import Map
+from base.angle import Angle
+from base.block import Block
+from base.figure import Figure
+from base.figure_s import FigureS
+from base.figure_back_s import FigureBackS
+from base.figure_t import FigureT
+from base.figure_l import FigureL
+from base.figure_back_l import FigureBackL
+from base.figure_line import FigureLine
+from base.figure_square import FigureSquare
+from base.map import Map
 
 import random
 import time

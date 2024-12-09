@@ -1,6 +1,6 @@
 
-from figure import Figure
-from block import Block
+from .figure import Figure
+from .block import Block
 from typing import List
 
 
