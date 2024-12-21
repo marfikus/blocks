@@ -13,11 +13,14 @@ from base.map import Map
 
 import random
 import time
+import pickle
+import os
 
 
 def start_interactive():
     import pygame
 
+    global map
 
     SIZE = 30
     WIDTH = len(map.busy_cells_map[0]) * SIZE
@@ -29,6 +32,8 @@ def start_interactive():
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
 
+    GAME_STATE_FILENAME = "game_state"
+
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -36,6 +41,7 @@ def start_interactive():
     clock = pygame.time.Clock()
     TIMEREVENT = pygame.USEREVENT + 1
     pygame.time.set_timer(TIMEREVENT, 1000)
+
 
     def update_map():
         screen.fill(BLACK)
@@ -54,30 +60,42 @@ def start_interactive():
         pygame.display.update()
 
 
-    # todo: сделать нормально, отдельный класс со счетчиком...
-    def select_next_figure():
-        nonlocal figure_index
-
-        # if len(map.figures) == 0:
-        #     print("No figures in map!")
-        #     return
-        
-        if figure_index < len(map.figures) - 1:
-            figure_index += 1
-        else:
-            figure_index = 0
-
-        return map.figures[figure_index]
+    def save_state():
+        with open(GAME_STATE_FILENAME, "wb") as f:
+            state = {
+                "map": map,
+                "running": running,
+                "is_need_update_map": is_need_update_map,
+                "figure": figure,
+                "rotated": rotated,
+                "figure_dropped": figure_dropped,
+                "game_speed": game_speed,
+            }
+            pickle.dump(state, f)
 
 
-    figure_index = 0
-    # figure = random.choice(figures)
-    # map.add_figure(figure, 3, 0)
-        # break
+    def load_state():
+        if not os.path.exists(GAME_STATE_FILENAME):
+            print("Saved game state not found!")
+            return
+
+        global map
+        nonlocal running, is_need_update_map, figure, rotated, figure_dropped, game_speed
+
+        with open(GAME_STATE_FILENAME, "rb") as f:
+            state = pickle.load(f)
+            map = state["map"]
+            running = state["running"]
+            is_need_update_map = state["is_need_update_map"]
+            figure = map.figures[0]
+            rotated = state["rotated"]
+            figure_dropped = state["figure_dropped"]
+            game_speed = state["game_speed"]
+
 
     running = True
     is_need_update_map = True
-    # figure = map.figures[1]
+    figure = None
     rotated = False
     figure_dropped = True
     last = pygame.time.get_ticks()
@@ -125,11 +143,13 @@ def start_interactive():
                     rotated = True
             elif pressed[pygame.K_F5]:
                 if not saved:
-                    print("save game")
+                    print("save state")
+                    save_state()
                     saved = True
             elif pressed[pygame.K_F6]:
                 if not loaded:
-                    print("load game")
+                    print("load state")
+                    load_state()
                     loaded = True
             elif pressed[pygame.K_q]:
                 running = False
@@ -156,31 +176,4 @@ figures = [
 ]
 
 start_interactive()
-
-# while True:
-#     figure = random.choice(figures)
-#     if not map.add_figure(figure, 3, 0):
-#         break
-
-#     while True:
-#         map.remove_filled_lines()
-#         map.show()
-#         com = input()
-
-#         if com == "t":
-#             map.rotate_figure(figure, Angle.CLOCKWISE_90)
-#         elif com == "l":
-#             map.move_figure(figure, figure.x - 1, figure.y)
-#         elif com == "r":
-#             map.move_figure(figure, figure.x + 1, figure.y)
-
-#         if not map.move_figure(figure, figure.x, figure.y + 1):
-#             break
-
-#     map.drop_figure(figure)
-
-
-
-
-
 
