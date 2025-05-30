@@ -126,33 +126,33 @@ def start_interactive():
             if event.type == pygame.KEYDOWN:
                 is_need_update_map = True
 
-            pressed = pygame.key.get_pressed()
-            if pressed[pygame.K_DOWN]:
-                moved = map.move_figure(figure, figure.x, figure.y + 1)
-                if not moved:
-                    map.drop_figure(figure)
-                    figure_dropped = True
-                    map.remove_filled_lines()
-            elif pressed[pygame.K_LEFT]:
-                map.move_figure(figure, figure.x - 1, figure.y)
-            elif pressed[pygame.K_RIGHT]:
-                map.move_figure(figure, figure.x + 1, figure.y)
-            elif pressed[pygame.K_SPACE]:
-                if not rotated:
-                    map.rotate_figure(figure, Angle.CLOCKWISE_90)
-                    rotated = True
-            elif pressed[pygame.K_F5]:
-                if not saved:
-                    print("save state")
-                    save_state()
-                    saved = True
-            elif pressed[pygame.K_F6]:
-                if not loaded:
-                    print("load state")
-                    load_state()
-                    loaded = True
-            elif pressed[pygame.K_q]:
-                running = False
+                pressed = pygame.key.get_pressed()
+                if pressed[pygame.K_DOWN]:
+                    moved = map.move_figure(figure, figure.x, figure.y + 1)
+                    if not moved:
+                        map.drop_figure(figure)
+                        figure_dropped = True
+                        map.remove_filled_lines()
+                elif pressed[pygame.K_LEFT]:
+                    map.move_figure(figure, figure.x - 1, figure.y)
+                elif pressed[pygame.K_RIGHT]:
+                    map.move_figure(figure, figure.x + 1, figure.y)
+                elif pressed[pygame.K_SPACE]:
+                    if not rotated:
+                        map.rotate_figure(figure, Angle.CLOCKWISE_90)
+                        rotated = True
+                elif pressed[pygame.K_F5]:
+                    if not saved:
+                        print("save state")
+                        save_state()
+                        saved = True
+                elif pressed[pygame.K_F6]:
+                    if not loaded:
+                        print("load state")
+                        load_state()
+                        loaded = True
+                elif pressed[pygame.K_q]:
+                    running = False
 
         if is_need_update_map:
             update_map()
