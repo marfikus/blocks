@@ -185,7 +185,8 @@ class Map:
         print("figure dropped")
 
 
-    def remove_filled_lines(self):
+    def remove_filled_lines(self) -> int:
+        removed_lines = 0
         for y in range(len(self.busy_cells_map)):
             filled = True
             for x in range(len(self.busy_cells_map[0])):
@@ -195,9 +196,12 @@ class Map:
             if filled:
                 print("filled string! need to shift")
                 self._remove_line(y)
+                removed_lines += 1
                 break
         if filled:
-            self.remove_filled_lines()
+            removed_lines += self.remove_filled_lines()
+            
+        return removed_lines
 
 
     def _remove_line(self, line_number):

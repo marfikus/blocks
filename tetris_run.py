@@ -70,6 +70,7 @@ def start_interactive():
                 "rotated": rotated,
                 "figure_dropped": figure_dropped,
                 "game_speed": game_speed,
+                "total_removed_lines": total_removed_lines
             }
             pickle.dump(state, f)
 
@@ -80,7 +81,7 @@ def start_interactive():
             return
 
         global map
-        nonlocal running, is_need_update_map, figure, rotated, figure_dropped, game_speed
+        nonlocal running, is_need_update_map, figure, rotated, figure_dropped, game_speed, total_removed_lines
 
         with open(GAME_STATE_FILENAME, "rb") as f:
             state = pickle.load(f)
@@ -91,6 +92,7 @@ def start_interactive():
             rotated = state["rotated"]
             figure_dropped = state["figure_dropped"]
             game_speed = state["game_speed"]
+            total_removed_lines = state["total_removed_lines"]
 
 
     running = True
@@ -100,6 +102,7 @@ def start_interactive():
     figure_dropped = True
     last = pygame.time.get_ticks()
     game_speed = 1000
+    total_removed_lines = 0
 
     while running:
         # todo: вероятно можно избавиться от многих лишних флагов, где-то делать continue..
@@ -120,7 +123,10 @@ def start_interactive():
                 if not moved:
                     map.drop_figure(figure)
                     figure_dropped = True
-                    map.remove_filled_lines()
+                    removed_lines = map.remove_filled_lines()
+                    if removed_lines > 0:
+                        total_removed_lines += removed_lines
+                        print(f"removed_lines: {removed_lines}, total: {total_removed_lines}")
                 is_need_update_map = True
                 continue
             if event.type == pygame.KEYDOWN:
@@ -132,7 +138,10 @@ def start_interactive():
                     if not moved:
                         map.drop_figure(figure)
                         figure_dropped = True
-                        map.remove_filled_lines()
+                        removed_lines = map.remove_filled_lines()
+                        if removed_lines > 0:
+                            total_removed_lines += removed_lines
+                            print(f"removed_lines: {removed_lines}, total: {total_removed_lines}")
                 elif pressed[pygame.K_LEFT]:
                     map.move_figure(figure, figure.x - 1, figure.y)
                 elif pressed[pygame.K_RIGHT]:
