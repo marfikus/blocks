@@ -22,9 +22,16 @@ def start_interactive():
 
     global map
 
-    SIZE = 30
-    WIDTH = len(map.busy_cells_map[0]) * SIZE
-    HEIGHT = len(map.busy_cells_map) * SIZE
+    BLOCK_SIZE = 30
+    MAP_WIDTH = len(map.busy_cells_map[0]) * BLOCK_SIZE
+    MAP_HEIGHT = len(map.busy_cells_map) * BLOCK_SIZE
+
+    SEPARATOR_WIDTH = 3
+    SIDEBAR_WIDTH = 200
+
+    SCREEN_WIDTH = MAP_WIDTH + SEPARATOR_WIDTH + SIDEBAR_WIDTH
+    SCREEN_HEIGHT = MAP_HEIGHT
+
     FPS = 60
 
     BLACK = (0, 0, 0)
@@ -36,7 +43,7 @@ def start_interactive():
 
     pygame.init()
     pygame.mixer.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("My game")
     clock = pygame.time.Clock()
     TIMEREVENT = pygame.USEREVENT + 1
@@ -45,6 +52,7 @@ def start_interactive():
 
     def update_map():
         screen.fill(BLACK)
+        pygame.draw.rect(screen, BLUE, pygame.Rect(MAP_WIDTH, 0, SEPARATOR_WIDTH, MAP_HEIGHT))
 
         x = 0
         y = 0
@@ -52,10 +60,10 @@ def start_interactive():
         for string in map.busy_cells_map:
             for cell in string:
                 if cell == 1:
-                    pygame.draw.rect(screen, RED, pygame.Rect(x, y, SIZE, SIZE))
-                x += SIZE
+                    pygame.draw.rect(screen, RED, pygame.Rect(x, y, BLOCK_SIZE, BLOCK_SIZE))
+                x += BLOCK_SIZE
             x = 0
-            y += SIZE
+            y += BLOCK_SIZE
 
         pygame.display.update()
 
