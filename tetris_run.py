@@ -32,6 +32,8 @@ def start_interactive():
     SCREEN_WIDTH = MAP_WIDTH + SEPARATOR_WIDTH + SIDEBAR_WIDTH
     SCREEN_HEIGHT = MAP_HEIGHT
 
+    TEXT_POS_X = MAP_WIDTH + SEPARATOR_WIDTH + 10
+
     FPS = 60
 
     BLACK = (0, 0, 0)
@@ -44,15 +46,21 @@ def start_interactive():
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("My game")
+    pygame.display.set_caption("Tetris game")
     clock = pygame.time.Clock()
     TIMEREVENT = pygame.USEREVENT + 1
     pygame.time.set_timer(TIMEREVENT, 1000)
+
+    font = pygame.font.SysFont(None, 24)
+    score_label = font.render("Score:", True, GREEN)
 
 
     def update_map():
         screen.fill(BLACK)
         pygame.draw.rect(screen, BLUE, pygame.Rect(MAP_WIDTH, 0, SEPARATOR_WIDTH, MAP_HEIGHT))
+        screen.blit(score_label, (TEXT_POS_X, 10))
+        score_val = font.render(str(total_removed_lines), True, GREEN)
+        screen.blit(score_val, (TEXT_POS_X, 30))
 
         x = 0
         y = 0
