@@ -51,29 +51,41 @@ def start_interactive():
     TIMEREVENT = pygame.USEREVENT + 1
     pygame.time.set_timer(TIMEREVENT, 1000)
 
+    screen.fill(BLACK)
+    pygame.draw.rect(screen, BLUE, (MAP_WIDTH, 0, SEPARATOR_WIDTH, MAP_HEIGHT))
     font = pygame.font.SysFont(None, 24)
     score_label = font.render("Score:", True, GREEN)
+    screen.blit(score_label, (TEXT_POS_X, 10))
+    score_val_rect = None
+    screen_map = pygame.Surface((MAP_WIDTH, MAP_HEIGHT))
+    screen_map_rect = screen_map.get_rect(topleft=(0, 0))
 
 
     def update_map():
-        screen.fill(BLACK)
-        pygame.draw.rect(screen, BLUE, pygame.Rect(MAP_WIDTH, 0, SEPARATOR_WIDTH, MAP_HEIGHT))
-        screen.blit(score_label, (TEXT_POS_X, 10))
-        score_val = font.render(str(total_removed_lines), True, GREEN)
-        screen.blit(score_val, (TEXT_POS_X, 30))
-
+        screen_map.fill(BLACK)
         x = 0
         y = 0
 
         for string in map.busy_cells_map:
             for cell in string:
                 if cell == 1:
-                    pygame.draw.rect(screen, RED, pygame.Rect(x, y, BLOCK_SIZE, BLOCK_SIZE))
+                    pygame.draw.rect(screen_map, RED, (x, y, BLOCK_SIZE, BLOCK_SIZE))
                 x += BLOCK_SIZE
             x = 0
             y += BLOCK_SIZE
 
-        pygame.display.update()
+        screen.blit(screen_map, screen_map_rect)
+
+
+    def update_score():
+        nonlocal score_val_rect
+
+        if score_val_rect is not None:
+            screen.fill(BLACK, rect=score_val_rect)
+
+        score_val = font.render(str(total_removed_lines), True, GREEN)
+        score_val_rect = score_val.get_rect(topleft=(TEXT_POS_X, 30))
+        screen.blit(score_val, score_val_rect)
 
 
     def save_state():
@@ -120,6 +132,8 @@ def start_interactive():
     game_speed = 1000
     total_removed_lines = 0
 
+    update_score()
+
     while running:
         # todo: вероятно можно избавиться от многих лишних флагов, где-то делать continue..
         saved = False
@@ -143,9 +157,11 @@ def start_interactive():
                     if removed_lines > 0:
                         total_removed_lines += removed_lines
                         print(f"removed_lines: {removed_lines}, total: {total_removed_lines}")
+                        update_score()
                 is_need_update_map = True
                 continue
             if event.type == pygame.KEYDOWN:
+                # может стоит сделать обработку клавиш как в примере test_update?
                 is_need_update_map = True
 
                 pressed = pygame.key.get_pressed()
@@ -158,6 +174,7 @@ def start_interactive():
                         if removed_lines > 0:
                             total_removed_lines += removed_lines
                             print(f"removed_lines: {removed_lines}, total: {total_removed_lines}")
+                            update_score()
                 elif pressed[pygame.K_LEFT]:
                     map.move_figure(figure, figure.x - 1, figure.y)
                 elif pressed[pygame.K_RIGHT]:
@@ -184,6 +201,7 @@ def start_interactive():
             is_need_update_map = False
             rotated = False
 
+        pygame.display.flip()
         clock.tick(FPS)
     pygame.quit()
 
