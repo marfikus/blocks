@@ -29,6 +29,8 @@ def start_interactive():
     SEPARATOR_WIDTH = 3
     SIDEBAR_WIDTH = 200
 
+    NEXT_FIGURE_PREVIEW_SIZE = BLOCK_SIZE * 4
+
     SCREEN_WIDTH = MAP_WIDTH + SEPARATOR_WIDTH + SIDEBAR_WIDTH
     SCREEN_HEIGHT = MAP_HEIGHT
 
@@ -57,8 +59,12 @@ def start_interactive():
     score_label = font.render("Score:", True, GREEN)
     screen.blit(score_label, (TEXT_POS_X, 10))
     score_val_rect = None
+    next_figure_label = font.render("Next:", True, GREEN)
+    screen.blit(next_figure_label, (TEXT_POS_X, 70))
     screen_map = pygame.Surface((MAP_WIDTH, MAP_HEIGHT))
     screen_map_rect = screen_map.get_rect(topleft=(0, 0))
+    next_figure_preview = pygame.Surface((NEXT_FIGURE_PREVIEW_SIZE, NEXT_FIGURE_PREVIEW_SIZE))
+    next_figure_preview_rect = next_figure_preview.get_rect(topleft=(TEXT_POS_X + 30, 95))
 
 
     def update_map():
@@ -86,6 +92,32 @@ def start_interactive():
         score_val = font.render(str(total_removed_lines), True, GREEN)
         score_val_rect = score_val.get_rect(topleft=(TEXT_POS_X, 30))
         screen.blit(score_val, score_val_rect)
+
+
+    def update_next_figure_preview(next_figure):
+        next_figure_preview.fill(BLACK)
+
+        x_pad = 0
+        y_pad = 0
+        next_figure_width = next_figure.width * BLOCK_SIZE
+        if next_figure_width < NEXT_FIGURE_PREVIEW_SIZE:
+            x_pad = (NEXT_FIGURE_PREVIEW_SIZE - next_figure_width) / 2
+
+        next_figure_height = next_figure.height * BLOCK_SIZE
+        if next_figure_height < NEXT_FIGURE_PREVIEW_SIZE:
+            y_pad = (NEXT_FIGURE_PREVIEW_SIZE - next_figure_height) / 2
+
+        x = x_pad
+        y = y_pad
+        for string in next_figure.figure_map:
+            for cell in string:
+                if cell is not None:
+                    pygame.draw.rect(next_figure_preview, RED, (x, y, BLOCK_SIZE, BLOCK_SIZE))
+                x += BLOCK_SIZE
+            x = x_pad
+            y += BLOCK_SIZE
+
+        screen.blit(next_figure_preview, next_figure_preview_rect)
 
 
     def save_state():
@@ -126,6 +158,7 @@ def start_interactive():
     running = True
     is_need_update_map = True
     figure = None
+    next_figure = None
     rotated = False
     figure_dropped = True
     last = pygame.time.get_ticks()
@@ -139,7 +172,15 @@ def start_interactive():
         saved = False
         loaded = False
         if figure_dropped:
-            figure = random.choice(figures)
+            if next_figure is None:
+                figure = random.choice(figures)
+            else:
+                figure = next_figure
+            next_figure = random.choice(figures)
+            # print("next_figure:", next_figure)
+            # next_figure.show_map()
+            update_next_figure_preview(next_figure)
+
             if not map.add_figure(figure, 3, 0):
                 running = False
                 break
