@@ -127,6 +127,7 @@ def start_interactive():
                 "running": running,
                 "is_need_update_map": is_need_update_map,
                 "figure": figure,
+                "next_figure": next_figure,
                 "rotated": rotated,
                 "figure_dropped": figure_dropped,
                 "game_speed": game_speed,
@@ -141,7 +142,7 @@ def start_interactive():
             return
 
         global map
-        nonlocal running, is_need_update_map, figure, rotated, figure_dropped, game_speed, total_removed_lines
+        nonlocal running, is_need_update_map, figure, next_figure, rotated, figure_dropped, game_speed, total_removed_lines
 
         with open(GAME_STATE_FILENAME, "rb") as f:
             state = pickle.load(f)
@@ -149,10 +150,14 @@ def start_interactive():
             running = state["running"]
             is_need_update_map = state["is_need_update_map"]
             figure = map.figures[0]
+            next_figure = state["next_figure"]
             rotated = state["rotated"]
             figure_dropped = state["figure_dropped"]
             game_speed = state["game_speed"]
             total_removed_lines = state["total_removed_lines"]
+
+        update_score()
+        update_next_figure_preview(next_figure)
 
 
     running = True
