@@ -10,6 +10,7 @@ from base.figure_back_l import FigureBackL
 from base.figure_line import FigureLine
 from base.figure_square import FigureSquare
 from base.map import Map
+import base.colors as colors
 
 import random
 import time
@@ -38,11 +39,6 @@ def start_interactive():
 
     FPS = 60
 
-    BLACK = (0, 0, 0)
-    RED = (255, 0, 0)
-    GREEN = (0, 255, 0)
-    BLUE = (0, 0, 255)
-
     GAME_STATE_FILENAME = "game_state"
 
     pygame.init()
@@ -53,13 +49,13 @@ def start_interactive():
     TIMEREVENT = pygame.USEREVENT + 1
     pygame.time.set_timer(TIMEREVENT, 1000)
 
-    screen.fill(BLACK)
-    pygame.draw.rect(screen, BLUE, (MAP_WIDTH, 0, SEPARATOR_WIDTH, MAP_HEIGHT))
+    screen.fill(colors.BG)
+    pygame.draw.rect(screen, colors.SEPARATOR, (MAP_WIDTH, 0, SEPARATOR_WIDTH, MAP_HEIGHT))
     font = pygame.font.SysFont(None, 24)
-    score_label = font.render("Score:", True, GREEN)
+    score_label = font.render("Score:", True, colors.TEXT)
     screen.blit(score_label, (TEXT_POS_X, 10))
     score_val_rect = None
-    next_figure_label = font.render("Next:", True, GREEN)
+    next_figure_label = font.render("Next:", True, colors.TEXT)
     screen.blit(next_figure_label, (TEXT_POS_X, 70))
     screen_map = pygame.Surface((MAP_WIDTH, MAP_HEIGHT))
     screen_map_rect = screen_map.get_rect(topleft=(0, 0))
@@ -68,14 +64,14 @@ def start_interactive():
 
 
     def update_map():
-        screen_map.fill(BLACK)
+        screen_map.fill(colors.BG)
         x = 0
         y = 0
 
         for string in map.busy_cells_map:
             for cell in string:
                 if cell == 1:
-                    pygame.draw.rect(screen_map, RED, (x, y, BLOCK_SIZE, BLOCK_SIZE))
+                    pygame.draw.rect(screen_map, colors.FIGURE, (x, y, BLOCK_SIZE, BLOCK_SIZE))
                 x += BLOCK_SIZE
             x = 0
             y += BLOCK_SIZE
@@ -87,15 +83,15 @@ def start_interactive():
         nonlocal score_val_rect
 
         if score_val_rect is not None:
-            screen.fill(BLACK, rect=score_val_rect)
+            screen.fill(colors.BG, rect=score_val_rect)
 
-        score_val = font.render(str(total_removed_lines), True, GREEN)
+        score_val = font.render(str(total_removed_lines), True, colors.TEXT)
         score_val_rect = score_val.get_rect(topleft=(TEXT_POS_X, 30))
         screen.blit(score_val, score_val_rect)
 
 
     def update_next_figure_preview(next_figure):
-        next_figure_preview.fill(BLACK)
+        next_figure_preview.fill(colors.BG)
 
         x_pad = 0
         y_pad = 0
@@ -112,7 +108,7 @@ def start_interactive():
         for string in next_figure.figure_map:
             for cell in string:
                 if cell is not None:
-                    pygame.draw.rect(next_figure_preview, RED, (x, y, BLOCK_SIZE, BLOCK_SIZE))
+                    pygame.draw.rect(next_figure_preview, colors.FIGURE, (x, y, BLOCK_SIZE, BLOCK_SIZE))
                 x += BLOCK_SIZE
             x = x_pad
             y += BLOCK_SIZE
