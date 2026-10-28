@@ -18,6 +18,7 @@ class Figure:
         self.figure_map: List[List[Block | None]] = []
         self.rotation: Rotation = Rotation()
         self.map_link: Any = None
+        self.color = None
 
 
     def __str__(self):
@@ -171,5 +172,9 @@ class Figure:
                     coords.append(Coords(x, y))
         
         return coords
+
+
+    def set_color(self, color):
+        self.color = color
     
     

@@ -108,7 +108,7 @@ def start_interactive():
         for string in next_figure.figure_map:
             for cell in string:
                 if cell is not None:
-                    pygame.draw.rect(next_figure_preview, colors.FIGURE, (x, y, BLOCK_SIZE, BLOCK_SIZE))
+                    pygame.draw.rect(next_figure_preview, next_figure.color, (x, y, BLOCK_SIZE, BLOCK_SIZE))
                 x += BLOCK_SIZE
             x = x_pad
             y += BLOCK_SIZE
@@ -175,9 +175,11 @@ def start_interactive():
         if figure_dropped:
             if next_figure is None:
                 figure = random.choice(figures)
+                figure.set_color(random.choice(colors.figure_colors))
             else:
                 figure = next_figure
             next_figure = random.choice(figures)
+            next_figure.set_color(random.choice(colors.figure_colors))
             # print("next_figure:", next_figure)
             # next_figure.show_map()
             update_next_figure_preview(next_figure)
