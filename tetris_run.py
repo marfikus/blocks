@@ -70,8 +70,8 @@ def start_interactive():
 
         for string in map.busy_cells_map:
             for cell in string:
-                if cell == 1:
-                    pygame.draw.rect(screen_map, colors.FIGURE, (x, y, BLOCK_SIZE, BLOCK_SIZE))
+                if cell is not None:
+                    pygame.draw.rect(screen_map, cell, (x, y, BLOCK_SIZE, BLOCK_SIZE))
                 x += BLOCK_SIZE
             x = 0
             y += BLOCK_SIZE
@@ -174,12 +174,10 @@ def start_interactive():
         loaded = False
         if figure_dropped:
             if next_figure is None:
-                figure = random.choice(figures)
-                figure.set_color(random.choice(colors.figure_colors))
+                figure = eval(random.choice(figure_names) + "()")
             else:
                 figure = next_figure
-            next_figure = random.choice(figures)
-            next_figure.set_color(random.choice(colors.figure_colors))
+            next_figure = eval(random.choice(figure_names) + "()")
             # print("next_figure:", next_figure)
             # next_figure.show_map()
             update_next_figure_preview(next_figure)
@@ -252,14 +250,14 @@ def start_interactive():
 
 map = Map(10, 15)
 
-figures = [
-    FigureLine(),
-    FigureSquare(),
-    FigureT(),
-    FigureL(),
-    FigureBackL(),
-    FigureS(),
-    FigureBackS(),
+figure_names = [
+    "FigureLine",
+    "FigureSquare",
+    "FigureT",
+    "FigureL",
+    "FigureBackL",
+    "FigureS",
+    "FigureBackS",
 ]
 
 start_interactive()

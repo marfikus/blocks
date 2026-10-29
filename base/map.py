@@ -1,5 +1,5 @@
 
-from typing import List
+from typing import List, Tuple
 from .angle import Angle
 from .coords import Coords
 from .two_coords_arrays import TwoCoordsArrays
@@ -11,15 +11,15 @@ class Map:
         self.width = width
         self.height = height
         self.figures: List[Figure] = []
-        self.busy_cells_map: List[List[bool]] = self._init_busy_cells_map()
+        self.busy_cells_map: List[List[Tuple | None]] = self._init_busy_cells_map()
         
         
-    def _init_busy_cells_map(self) -> List[List[bool]]:
+    def _init_busy_cells_map(self) -> List[List[Tuple | None]]:
         map = []
         for y in range(self.height):
             map.append([])
             for x in range(self.width):
-                map[y].append(False)
+                map[y].append(None)
         return map
     
     
@@ -33,7 +33,7 @@ class Map:
             cells_str = ""
             for cell in string:
                 # cells_str += f"o{add_space}" if cell else f" {add_space}"
-                if cell:
+                if cell is not None:
                     cells_str += "o" + add_space
                 else:
                     cells_str += " " + add_space
@@ -73,7 +73,7 @@ class Map:
             else:
                 rel_coords.append(Coords(rel_x, rel_y))
         
-        self._set_busy_cells(rel_coords, True)
+        self._set_busy_cells(rel_coords, f.color)
         self.figures.append(f)
         f.map_link = self
         f.x = x
@@ -92,7 +92,7 @@ class Map:
         for block_coords in blocks_coords:
             rel_x = block_coords.x + f.x
             rel_y = block_coords.y + f.y
-            self.busy_cells_map[rel_y][rel_x] = False
+            self.busy_cells_map[rel_y][rel_x] = None
             
         self.figures.remove(f)
         
@@ -125,8 +125,8 @@ class Map:
             return False
             
         # Обновляем массив занятых ячеек
-        self._set_busy_cells(rel_coords_arrays.first, False)
-        self._set_busy_cells(rel_coords_arrays.second, True)
+        self._set_busy_cells(rel_coords_arrays.first, None)
+        self._set_busy_cells(rel_coords_arrays.second, f.color)
         
         # Обновляем позицию фигуры
         f.x = new_x
@@ -164,8 +164,8 @@ class Map:
             return
             
         # Обновляем массив занятых ячеек
-        self._set_busy_cells(rel_coords_arrays.first, False)
-        self._set_busy_cells(rel_coords_arrays.second, True)
+        self._set_busy_cells(rel_coords_arrays.first, None)
+        self._set_busy_cells(rel_coords_arrays.second, f.color)
         
         # Применяем поворот фигуры
         f.apply_rotation()
@@ -190,7 +190,7 @@ class Map:
         for y in range(len(self.busy_cells_map)):
             filled = True
             for x in range(len(self.busy_cells_map[0])):
-                if not self.busy_cells_map[y][x]:
+                if self.busy_cells_map[y][x] is None:
                     filled = False
                     break
             if filled:
@@ -209,7 +209,7 @@ class Map:
             return
         
         for i in range(len(self.busy_cells_map[line_number])):
-            self.busy_cells_map[line_number][i] = 0
+            self.busy_cells_map[line_number][i] = None
             
         if line_number == 0: 
             return
@@ -220,7 +220,7 @@ class Map:
                 self.busy_cells_map[i][j] = self.busy_cells_map[i - 1][j]
             
         for i in range(len(self.busy_cells_map[0])):
-            self.busy_cells_map[0][i] = 0
+            self.busy_cells_map[0][i] = None
 
 
     def _get_rel_blocks_coords(self, coords_arrays: TwoCoordsArrays, cur_pos: Coords, new_pos: Coords) -> TwoCoordsArrays:
@@ -267,10 +267,13 @@ class Map:
 
     
     def _cell_is_busy(self, x: int, y: int) -> bool:
-        return self.busy_cells_map[y][x]
+        if self.busy_cells_map[y][x] is None:
+            return False
+        else:
+            return True
 
 
-    def _set_busy_cells(self, rel_coords: List[Coords], state: bool):
+    def _set_busy_cells(self, rel_coords: List[Coords], state: Tuple | None):
         for rel_coord in rel_coords:
             x = rel_coord.x
             y = rel_coord.y

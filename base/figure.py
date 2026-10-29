@@ -1,14 +1,17 @@
 
-from typing import Any, List
+from typing import Any, List, Tuple
 from .angle import Angle
 from .block import Block
 from .coords import Coords
 from .rotation import Rotation
 # from map import Map
+from .colors import figure_colors
+
+import random
 
 
 class Figure:
-    def __init__(self, title: str=""):
+    def __init__(self, title: str="", color: Tuple | None=None):
         self.title = title
         self.x = 0
         self.y = 0
@@ -18,7 +21,10 @@ class Figure:
         self.figure_map: List[List[Block | None]] = []
         self.rotation: Rotation = Rotation()
         self.map_link: Any = None
-        self.color = None
+
+        self.color = color
+        if color is None:
+            self.color = random.choice(figure_colors)
 
 
     def __str__(self):
@@ -172,9 +178,5 @@ class Figure:
                     coords.append(Coords(x, y))
         
         return coords
-
-
-    def set_color(self, color):
-        self.color = color
     
     
